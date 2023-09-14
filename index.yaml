@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  istioctl-proxy:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-09-14T06:33:47.284199513Z"
+    description: A Helm chart for Kubernetes
+    digest: 6d42b22c00e0ca3b08c0ea78ac2e7dac2d41823121c59d002d61359ec0cf6142
+    name: istioctl-proxy
+    type: application
+    urls:
+    - https://github.com/frauniki/istioctl-proxy/releases/download/istioctl-proxy-0.1.0/istioctl-proxy-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-09-14T06:33:47.284205911Z"
