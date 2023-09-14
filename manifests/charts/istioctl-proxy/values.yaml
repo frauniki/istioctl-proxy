@@ -1,0 +1,26 @@
+certificate:
+  create: true
+  duration: 72h0m0s
+  renewBefore: 24h0m0s
+  privateKey:
+    rotationPolicy: Always
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    group: cert-manager.io
+    kind: Issuer
+    name: istio-ca
+
+replicaCount: 1
+
+image:
+  repository: docker.io/istio/istioctl-proxy
+  tag: "0.1"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+
+serviceAccount:
+  create: true
+  annotations: {}

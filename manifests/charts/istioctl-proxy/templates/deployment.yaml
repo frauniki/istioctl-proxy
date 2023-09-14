@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "istioctl-proxy.fullname" . }}
+  labels:
+    {{- include "istioctl-proxy.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: istioctl-proxy
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      labels:
+        app: istioctl-proxy
+    spec:
+      serviceAccountName: {{ include "istioctl-proxy.serviceAccountName" . }}
+      containers:
+        - image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          name: istioctl-proxy
+          volumeMounts:
+            - name: certs
+              mountPath: "/etc/certs"
+              readOnly: true
+          args:
+            [
+              "-port",
+              "9090",
+              "-cert",
+              "/etc/certs/tls.crt",
+              "-key",
+              "/etc/certs/tls.key",
+            ]
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - containerPort: 9090
+      volumes:
+        - name: certs
+          secret:
+            secretName: {{ include "istioctl-proxy.fullname" . }}
+            defaultMode: 0400
